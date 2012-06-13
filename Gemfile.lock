@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     haml (3.0.25)
+    json (1.6.5)
     rack (1.2.1)
     rmagick (2.12.0)
     sinatra (1.2.6)
@@ -14,5 +15,6 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  json
   rmagick
   sinatra
