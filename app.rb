@@ -1,10 +1,11 @@
 require 'sinatra'
-# require 'sinatra/reloader' if development?
+require 'sinatra/reloader' if development?
 require 'haml'
 require 'cgi'
 require 'net/https'
-require 'RMagick'
+# require 'RMagick'
 require 'json'
+require 'coffee-script'
 
 # require 'sass/plugin/rack'
 # use Sass::Plugin::Rack
@@ -13,6 +14,10 @@ set :protection, :except => :json_csrf
 
 get '/' do
   haml :index
+end
+
+get '/application.js' do
+  coffee :application
 end
 
 get '/w*' do
