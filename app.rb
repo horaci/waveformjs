@@ -1,10 +1,10 @@
 require 'sinatra'
-require 'sinatra/reloader' if development?
 require 'haml'
 require 'cgi'
 require 'net/https'
-require "rmagick"
+require 'RMagick'
 require 'json'
+require 'coffee-script'
 
 # require 'sass/plugin/rack'
 # use Sass::Plugin::Rack
@@ -18,6 +18,10 @@ end
 get '/waveform.js' do
   content_type "text/javascript"
   coffee :waveform
+end
+
+get '/application.js' do
+  coffee :application
 end
 
 get '/w*' do

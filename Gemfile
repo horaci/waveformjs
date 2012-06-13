@@ -2,5 +2,6 @@ source 'http://rubygems.org'
 
 gem 'haml'
 gem 'sinatra'
-gem 'rmagick'
+gem 'rmagick', :require => 'RMagick'
 gem 'json'
+gem 'coffee-script'
