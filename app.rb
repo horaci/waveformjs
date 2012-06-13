@@ -15,6 +15,11 @@ get '/' do
   haml :index
 end
 
+get '/waveform.js' do
+  content_type "text/javascript"
+  coffee :waveform
+end
+
 get '/w*' do
   content_type :json
 
