@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/reloader' if development?
+# require 'sinatra/reloader' if development?
 require 'haml'
 require 'cgi'
 require 'net/https'
