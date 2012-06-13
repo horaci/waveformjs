@@ -3,7 +3,7 @@ require 'sinatra'
 require 'haml'
 require 'cgi'
 require 'net/https'
-require "rmagick"
+require 'RMagick'
 require 'json'
 
 # require 'sass/plugin/rack'
