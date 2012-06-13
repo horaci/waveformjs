@@ -1,9 +1,8 @@
 require 'sinatra'
-require 'sinatra/reloader' if development?
 require 'haml'
 require 'cgi'
 require 'net/https'
-# require 'RMagick'
+require 'RMagick'
 require 'json'
 require 'coffee-script'
 
