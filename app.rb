@@ -5,10 +5,12 @@ require 'net/https'
 require 'RMagick'
 require 'json'
 require 'coffee-script'
+require 'dalli'
 
 # require 'sass/plugin/rack'
 # use Sass::Plugin::Rack
 
+set :cache, Dalli::Client.new
 set :protection, :except => :json_csrf
 
 get '/' do
@@ -21,11 +23,14 @@ get '/waveform.js' do
 end
 
 get '/application.js' do
+  content_type "text/javascript"
   coffee :application
 end
 
 get '/w*' do
   content_type :json
+
+  settings.cache.set('color', 'blue')
 
   waveform = []
 
