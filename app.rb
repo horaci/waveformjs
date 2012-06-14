@@ -11,6 +11,7 @@ require 'dalli'
 # use Sass::Plugin::Rack
 
 set :cache, Dalli::Client.new
+set :enable_cache, true
 set :protection, :except => :json_csrf
 
 get '/' do
