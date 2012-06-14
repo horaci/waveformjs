@@ -19,12 +19,12 @@ get '/' do
 end
 
 get '/waveform.js' do
-  content_type :javascript
+  content_type "text/javascript"
   coffee :waveform
 end
 
 get '/application.js' do
-  content_type :javascript
+  content_type "text/javascript"
   coffee :application
 end
 
