@@ -31,20 +31,28 @@ end
 get '/w*' do
   content_type :json
 
-  settings.cache.set('color', 'blue')
+  if settings.cache.get(params[:url])
 
-  waveform = []
+    waveform = settings.cache.get(params[:url])
 
-  image = Magick::Image.read(params[:url]).first
-  image.crop!(0, 0, image.columns, image.rows / 2)
-  image.rotate!(90)
+  else
 
-  columns = image.columns
+    waveform = []
 
-  image.each_pixel do |pixel, c, r|
-    if waveform.length <= r && (pixel.opacity == 0 || c == columns - 1)
-      waveform << c / columns.to_f
+    image = Magick::Image.read(params[:url]).first
+    image.crop!(0, 0, image.columns, image.rows / 2)
+    image.rotate!(90)
+
+    columns = image.columns
+
+    image.each_pixel do |pixel, c, r|
+      if waveform.length <= r && (pixel.opacity == 0 || c == columns - 1)
+        waveform << c / columns.to_f
+      end
     end
+
+    settings.cache.set(params[:url], waveform)
+
   end
 
   "#{ params[:callback] }(#{ waveform.to_json });"
