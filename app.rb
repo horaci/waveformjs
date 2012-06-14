@@ -10,7 +10,7 @@ require 'dalli'
 # require 'sass/plugin/rack'
 # use Sass::Plugin::Rack
 
-set :cache, Dalli::Client.new
+set :cache, Dalli::Client.new # unless development?
 set :enable_cache, true
 set :protection, :except => :json_csrf
 
@@ -19,24 +19,19 @@ get '/' do
 end
 
 get '/waveform.js' do
-  content_type "text/javascript"
+  content_type :javascript
   coffee :waveform
 end
 
 get '/application.js' do
-  content_type "text/javascript"
+  content_type :javascript
   coffee :application
 end
 
 get '/w*' do
   content_type :json
 
-  if settings.cache.get(params[:url])
-
-    waveform = settings.cache.get(params[:url])
-
-  else
-
+  waveform = memcache_fetch params[:url] do
     waveform = []
 
     image = Magick::Image.read(params[:url]).first
@@ -51,9 +46,16 @@ get '/w*' do
       end
     end
 
-    settings.cache.set(params[:url], waveform)
-
+    waveform
   end
 
   "#{ params[:callback] }(#{ waveform.to_json });"
+end
+
+def memcache_fetch(key)
+  settings.cache.get(key) || begin
+    value = yield
+    settings.cache.set(key, value)
+    value
+  end
 end
