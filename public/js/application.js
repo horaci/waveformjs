@@ -3,14 +3,15 @@ $(function(){
   container: $(".waveform")[0],
   outerColor: "transparent",
   innerColor: function(percentageX, percentageY){
-    return '#'+Math.floor(Math.random()*16777215).toString(16);
+    return '#'+Math.floor(percentageX*16777215).toString(16);
   }
 });
 
-$.getJSON("/w?callback=?",{
+$.getJSON("http://waveform.herokuapp.com/w?callback=?",{
     url: "http://w1.sndcdn.com/EQyi2vpPOMvG_m.png",
   }, function(d){
-    waveform.setDataInterpolated(d);
+    //waveform.setDataInterpolated(d);
+    waveform.setDataInterpolated([1,2,1,0.5,0]);
     waveform.redraw();
   });
 });
