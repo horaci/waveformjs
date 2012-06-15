@@ -3,9 +3,9 @@ module "Waveform"
 test "Should create new (fitting) canvas if container is passed", ->
   waveform = new Waveform
     container: document.getElementById("qunit-fixture")
-  window.bla = waveform
-  equal waveform.canvas.style.width, "100px"
-  equal waveform.canvas.style.height, "100px"
+
+  equal waveform.width, 100
+  equal waveform.height, 100
 
 test "Should reuse the existing canvas if passed", ->
   canvas = document.createElement("canvas")
@@ -14,18 +14,18 @@ test "Should reuse the existing canvas if passed", ->
     canvas: canvas
   equal waveform.canvas, canvas
 
-test "#expandData should fill up to limit", ->
+test "#expandArray should fill up to limit", ->
   window.waveform = new Waveform
     container: document.getElementById("qunit-fixture")
 
-  data = waveform.expandData([0.5, 0.8, 1.0], 5)
+  data = waveform.expandArray([0.5, 0.8, 1.0], 5)
   deepEqual(data, [0.5, 0.8, 1.0, 0.0, 0.0])
 
-#test "#setDataWithLimit should only set recent data if over limit", ->
-#  waveform = new Waveform
-#    container: document.getElementById("qunit-fixture")
-#  waveform.setDataWithLimit([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 5)
-#  deepEqual(waveform.data, [2.0, 3.0, 4.0, 5.0, 6.0])
+test "#expandArray should only set recent data if over limit", ->
+  waveform = new Waveform
+    container: document.getElementById("qunit-fixture")
+  data = waveform.expandArray([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 5)
+  deepEqual(data, [2.0, 3.0, 4.0, 5.0, 6.0])
 
 test "#interpolateArray interpolation 1", ->
   waveform = new Waveform
