@@ -5,10 +5,8 @@ window.Waveform = class Waveform
     @data      = options.data || []
     @outerColor = options.outerColor || "#FFFFFF"
     @innerColor = options.innerColor || "#000000"
-    @interpolate = options.interpolate || false
-    if options.data?
-      @update(options.data)
-
+    @interpolate = true
+    @interpolate = false if options.interpolate == false
     unless @canvas?
       if @container
         @canvas = @createCanvas(@container, options.width || @container.clientWidth, options.height || @container.clientHeight)
