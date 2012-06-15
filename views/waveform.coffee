@@ -11,8 +11,8 @@ window.Waveform = (options={}) ->
   createCanvas = (container) ->
     canvas = document.createElement("canvas")
     container.appendChild(canvas)
-    canvas.style.width  = width  || container.clientWidth + "px"
-    canvas.style.height = height || container.clientHeight + "px"
+    canvas.width  = width  || container.clientWidth
+    canvas.height = height || container.clientHeight
     canvas
 
   @container = options.container
@@ -41,7 +41,13 @@ window.Waveform = (options={}) ->
       ctx.clearRect(0, 0, width, height)
       ctx.fillRect(0, 0, width, height)
 
-    setDataWithLimit: (data, limit, defaultValue=0.0) ->
+    setData: (data) ->
+      @data = data
+
+    setDataInterpolated: (data) ->
+      @data = @interpolateArray(data, width)
+
+    expandData: (data, limit, defaultValue=0.0) ->
       dataToSet = []
       if data.length > limit
         dataToSet = data.slice(data.length - limit, data.length)
@@ -49,38 +55,26 @@ window.Waveform = (options={}) ->
         console.log limit - 1 
         for i in [0..limit-1]
           dataToSet[i] = data[i] || defaultValue
-      @setDataInterpolated(dataToSet)
+      dataToSet
 
+    linearInterpolate: (before, after, atPoint) ->
+      before + (after - before) * atPoint
 
-    interpolateData: (data) ->
+    interpolateArray: (data, fitCount) ->
+      newData = new Array()
+      springFactor = new Number((data.length - 1) / (fitCount - 1))
+      newData[0] = data[0]
+      i = 1
 
-    setDataInterpolated: (data) ->
-      total = data.length
-      step = total / width
-      interpolated = []
-      avg = 0
-      i = 0
-      sauce = ->
-        min = 0.85
-        max = 1.3
-        diff = max - min
-        min + Math.random() * diff
-
-      if step < 1
-        c = 0
-        while i < width
-          interpolated.push data[Math.round(c)] * sauce()
-          i += 1
-          c += step
-      else
-        step = Math.floor(step)
-        while i < total
-          avg += data[i]
-          if i % step is 0
-            interpolated.push avg / step
-            avg = 0
-          i += 1
-      @data = interpolated
+      while i < fitCount - 1
+        tmp = i * springFactor
+        before = new Number(Math.floor(tmp)).toFixed()
+        after = new Number(Math.ceil(tmp)).toFixed()
+        atPoint = tmp - before
+        newData[i] = @linearInterpolate(data[before], data[after], atPoint)
+        i++
+      newData[fitCount - 1] = data[data.length - 1]
+      newData
 
     redraw: () ->
       @clear()
@@ -92,6 +86,11 @@ window.Waveform = (options={}) ->
         ctx.fillStyle = innerColor(i/width, d) if typeof(innerColor) == "function"
         ctx.clearRect t*i, middle - middle * d, t, (middle * d * 2)
         #ctx.fillRect t*i, middle - middle * d, t, middle * d * 2
+
+        # x y width height
+        console.log(t,i)
+        console.log parseInt(t*i, 10), parseInt(middle - middle * d, 10), parseInt(t, 10), parseInt(middle * d * 2, 10)
+
         ctx.fillRect parseInt(t*i, 10), parseInt(middle - middle * d, 10), parseInt(t, 10), parseInt(middle * d * 2, 10)
         i++
   }

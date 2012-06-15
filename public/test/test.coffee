@@ -1,6 +1,4 @@
-module "Waveform",
-test "Waveform should exist", ->
-  ok(window.Waveform, "present")
+module "Waveform"
 
 test "Should create new (fitting) canvas if container is passed", ->
   waveform = new Waveform
@@ -16,14 +14,42 @@ test "Should reuse the existing canvas if passed", ->
     canvas: canvas
   equal waveform.canvas, canvas
 
-test "#setDataWithLimit should fill up to limit", ->
+test "#expandData should fill up to limit", ->
   window.waveform = new Waveform
     container: document.getElementById("qunit-fixture")
-  waveform.setDataWithLimit([1.0, 2.0, 3.0], 5)
-  deepEqual(waveform.data, [1.0, 2.0, 3.0, 0.0, 0.0])
 
-test "#setDataWithLimit should only set recent data if over limit", ->
+  data = waveform.expandData([0.5, 0.8, 1.0], 5)
+  deepEqual(data, [0.5, 0.8, 1.0, 0.0, 0.0])
+
+#test "#setDataWithLimit should only set recent data if over limit", ->
+#  waveform = new Waveform
+#    container: document.getElementById("qunit-fixture")
+#  waveform.setDataWithLimit([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 5)
+#  deepEqual(waveform.data, [2.0, 3.0, 4.0, 5.0, 6.0])
+
+test "#interpolateArray interpolation 1", ->
   waveform = new Waveform
     container: document.getElementById("qunit-fixture")
-  waveform.setDataWithLimit([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], 5)
-  deepEqual(waveform.data, [2.0, 3.0, 4.0, 5.0, 6.0])
+  data = waveform.interpolateArray([0.8, 0.4, 0.0], 2)
+  deepEqual(data, [0.8, 0])
+
+
+test "#interpolateArray interpolation", ->
+  waveform = new Waveform
+    container: document.getElementById("qunit-fixture")
+  data = waveform.interpolateArray([1, 0.75, 0.5, 0.25, 0], 3)
+  deepEqual(data, [1, 0.5, 0])
+
+
+test "#interpolateArray extrapolation", ->
+  waveform = new Waveform
+    container: document.getElementById("qunit-fixture")
+  data = waveform.interpolateArray([0.8, 0.2], 3)
+  deepEqual(data, [0.8, 0.5, 0.2])
+
+
+test "#interpolateArray extrapolation 2", ->
+  waveform = new Waveform
+    container: document.getElementById("qunit-fixture")
+  data = waveform.interpolateArray([0.8, 0.2], 4)
+  deepEqual(data, [0.8, 0.6000000000000001, 0.4, 0.2])
