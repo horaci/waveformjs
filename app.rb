@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 require 'sinatra'
 require 'haml'
 require 'cgi'
@@ -8,16 +6,18 @@ require 'RMagick'
 require 'json'
 require 'coffee-script'
 require 'dalli'
+require 'sass'
 
-# require 'sass/plugin/rack'
-# use Sass::Plugin::Rack
-
-set :cache, Dalli::Client.new # unless development?
+set :cache, Dalli::Client.new
 set :enable_cache, true
 set :protection, :except => :json_csrf
 
 get '/' do
   haml :index
+end
+
+get '/application.css' do
+  sass :application
 end
 
 get '/waveform.js' do
