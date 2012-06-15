@@ -13,4 +13,4 @@ $ ->
     width: 56
     height: 100
     interpolate: false
-    data: d
+    data: d  
