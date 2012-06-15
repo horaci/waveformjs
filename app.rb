@@ -7,10 +7,21 @@ require 'json'
 require 'coffee-script'
 require 'dalli'
 require 'sass'
+require 'compass'
 
 set :cache, Dalli::Client.new
 set :enable_cache, true
 set :protection, :except => :json_csrf
+
+configure do
+  Compass.configuration do |config|
+    config.project_path = File.dirname(__FILE__)
+    config.sass_dir = 'views'
+  end
+
+  set :haml, { :format => :html5 }
+  set :sass, Compass.sass_engine_options
+end
 
 get '/' do
   haml :index

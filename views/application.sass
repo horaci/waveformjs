@@ -1,2 +1,26 @@
+@import "compass/reset"
+@import "compass/css3"
+
 body
-  background: pink
+  background: url(/images/bg.jpg)
+
+nav
+  background: white
+  border-right: 1px solid #BBB
+  @include box-shadow(rgba(black, 0.25) 0 0 10px)
+  width: 230px
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+
+section
+  position: relative
+  margin: 230px 0 0 280px
+
+  h1
+    background: url(/images/waveformjs.png)
+    display: inline-block
+    height: 100px
+    text-indent: -3000px
+    width: 526px
