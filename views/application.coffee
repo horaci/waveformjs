@@ -11,7 +11,7 @@ $ ->
     container: $("#logo")[0]
     outerColor: "transparent"
     innerColor: "#FF6600"
-    width: 8 * 7
-    height: 50
+    width: 56
+    height: 100
     interpolate: false
     data: d
