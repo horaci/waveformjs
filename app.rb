@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'sinatra'
 require 'haml'
 require 'cgi'
@@ -30,6 +32,7 @@ get '/w*' do
   waveform = []
 
   image = Magick::Image.read(params[:url]).first
+
   image.crop!(0, 0, image.columns, image.rows / 2)
   image.rotate!(90)
 
