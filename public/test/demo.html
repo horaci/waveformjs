@@ -26,7 +26,42 @@ body {
 
 <script>
 
-$(function(){
+$(".play").live("click", function(){
+  SC.initialize({
+    client_id: "YOUR_CLIENT_ID"
+  });
+
+
+  SC.get("/tracks/293", function(track){
+    $.getJSON("http://waveformjs.org/w?callback=?", {
+      url: track.waveform_url,
+    }, function(d){
+      var sound;
+      var waveform = new Waveform({
+        container: $(".w0").get(0),
+        innerColor: function(x){
+          if(sound && x < sound.position / sound.durationEstimate){
+            return "rgba(255,  102, 0, 0.8)";
+          }else if(sound && x < sound.bytesLoaded / sound.bytesTotal){
+            return "rgba(0, 0, 0, 0.8)";
+          }else{
+            return "rgba(0, 0, 0, 0.4)";
+          }
+        },
+        data: d
+      });
+
+      SC.stream(track.uri, {
+        whileloading: waveform.redraw,
+        whileplaying: waveform.redraw,
+        volume: 0,
+        autoPlay: true
+      }, function(s){
+        sound = s;
+      });
+    });
+  });
+
   d = []
   a = [0, 0.25, 0, 1, 0, 0.5, 0, 0.75]
   for(var i=0; i < a.length; i++){
@@ -34,6 +69,8 @@ $(function(){
       d.push(a[i]);
     }
   }
+
+  return false;
 
   w0 = new Waveform({
     container: $(".w2")[0],
@@ -103,6 +140,7 @@ $(function(){
 
   </head>
   <body>
+    <button class="play">Play!</button>
     <div class='waveform w0'></div>
     <div class='waveform w1'></div>
     <div class='waveform w2'></div>
