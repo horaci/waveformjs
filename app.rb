@@ -36,11 +36,6 @@ get '/waveform.js' do
   coffee :waveform
 end
 
-get '/application.js' do
-  content_type "text/javascript"
-  coffee :application
-end
-
 get '/w*' do
   content_type :json
 
