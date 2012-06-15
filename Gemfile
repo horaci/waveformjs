@@ -1,8 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'haml'
+gem 'haml', '~>3.1'
+gem 'sass'
 gem 'sinatra'
 gem 'rmagick', :require => 'RMagick'
 gem 'json'
 gem 'coffee-script'
 gem 'dalli'
+gem 'compass'
