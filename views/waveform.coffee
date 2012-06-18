@@ -38,7 +38,7 @@ window.Waveform = class Waveform
       @setDataInterpolated(options.data)
     @redraw()
 
-  redraw: () ->
+  redraw: () =>
     @clear()
     @ctx.fillStyle = @innerColor
     middle = @height / 2
