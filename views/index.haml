@@ -42,7 +42,10 @@
       %a(name="top")
         %h1 Waveform.js <div id="logo"></div>
 
-      %p Waveform.js makes drawing <a href="http://soundcloud.com">SoundCloud</a> waveforms simple and lets you <strong>style</strong> and <strong>color</strong> them the way you want. It comes as a small JavaScript <strong>library</strong> and is using a <em>lightweight service</em> hosted on <a href="http://waveformjs.org">waveformjs.org</a> that translates the waveform image provided by SoundCloud into an <strong>array</strong> of <strong>floating points</strong>.
+      %p Waveform.js makes drawing <a href="http://soundcloud.com">SoundCloud</a> waveforms simple and lets you <strong>style</strong> and <strong>color</strong> them the way you want them. It comes as a small JavaScript <strong>library</strong> and is using a <em>lightweight service</em> hosted on <a href="http://waveformjs.org">waveformjs.org</a> that translates the waveform images provided by SoundCloud into <strong>floating points</strong>.
+
+      %pre
+        <em>"Damn Good Waveforms"</em> (Eric Wahlforss, CTO of SoundCloud)
 
       %p The project is open source and <a href="http://github.com/soundcloud/waveform.js">hosted on Github</a>. This page provides all the documentation you'll need as well as a list of <a href="#examples">examples</a>. Waveform.js is available to use under the <a href="#">MIT software license</a>. It was written by <a href="https://twitter.com/intent/user?screen_name=johanneswagener">Johannes Wagener</a> and <a href="https://twitter.com/intent/user?screen_name=leemartin">Lee Martin</a>.
 
@@ -50,20 +53,55 @@
 
       %p Follow <a href="https://twitter.com/intent/user?screen_name=waveformjs">@waveformjs</a> for the latest.
 
+
+      %a(name="examples")
+        %h2 Examples
+
+      %p
+        This demonstrates a,b,c
+      #example1.example-waveform
+      :example
+        new Waveform({
+          container: document.getElementById("example1"),
+          outerColor: "transparent",
+          innerColor: function(){
+            return '#'+Math.floor(Math.random()*16777215).toString(16);
+          },
+          data: [1, 0.5, 1, 0],
+        });
+      %p
+        This demonstrates a,b,c
+      #example2.example-waveform
+      :example
+        new Waveform({
+          container: document.getElementById("example2"),
+          outerColor: "transparent",
+          innerColor: function(){
+            return '#'+Math.floor(Math.random()*16777215).toString(16);
+          },
+          data: [1, 0.5, 1, 0],
+        });
+      %p
+        This demonstrates a,b,c
+      #example3.example-waveform
+      :example
+        new Waveform({
+          container: document.getElementById("example3"),
+          outerColor: "transparent",
+          innerColor: function(){
+            return '#'+Math.floor(Math.random()*16777215).toString(16);
+          },
+          data: [1, 0.5, 1, 0],
+        });
       %h2 Downloads <em>(Right-click, and use "Save As")</em>
       %p
-        %a.button(href="/waveform.js") Production Version (1.0.0)
-      /%p Bacon ipsum dolor sit amet <a href="#">drumstick</a> bacon pork loin, leberkas <code>pork hamburger</code> shoulder. Ground round ham meatball, pork loin shank bresaola speck cow beef hamburger strip steak sausage. Pork chop spare ribs ham beef ribs pork belly fatback filet mignon, tri-tip prosciutto biltong chuck. Speck leberkas ham hock pancetta. Shoulder pork belly bresaola, rump andouille corned beef t-bone kielbasa short ribs pork ball tip ribeye sirloin speck. Shankle flank pork salami ham hock.
+        %a.button(href="/waveform.js") Latest Version (1.0.0)
 
       %a(name="usage")
         %h2 Usage
       %p Bacon ipsum dolor sit amet tri-tip jerky cow turducken chuck, pig short ribs short loin speck ground round beef ribs. Pork belly pork loin tongue ham hock pastrami. Ham hock speck chicken, jerky ribeye tongue filet mignon turducken pancetta. Flank ground round fatback salami. Cow andouille pork chop turducken. T-bone tail spare ribs filet mignon tongue.
       %pre
         var object = {};
-
-      %a(name="examples")
-        %h2 Examples
-      %p Bacon ipsum dolor sit amet tri-tip jerky cow turducken chuck, pig short ribs short loin speck ground round beef ribs. Pork belly pork loin tongue ham hock pastrami. Ham hock speck chicken, jerky ribeye tongue filet mignon turducken pancetta. Flank ground round fatback salami. Cow andouille pork chop turducken. T-bone tail spare ribs filet mignon tongue.
 
       %a(name="interpolation")
         %h3 Interpolation

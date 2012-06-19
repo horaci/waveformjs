@@ -13,13 +13,20 @@ set :cache, Dalli::Client.new
 set :enable_cache, true
 set :protection, :except => :json_csrf
 
+module Haml::Filters::Example
+  include Haml::Filters::Base
+  def render(text)
+    %[<script class="example">#{text}</script>]
+  end
+end
+
 configure do
   Compass.configuration do |config|
     config.project_path = File.dirname(__FILE__)
     config.sass_dir = 'views'
   end
 
-  set :haml, { :format => :html5 }
+  set :haml, { :format => :html5, :ugly => true }
   set :sass, Compass.sass_engine_options
 end
 
