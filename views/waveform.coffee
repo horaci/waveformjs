@@ -47,10 +47,7 @@ window.Waveform = class Waveform
       t = @width / @data.length
       @ctx.fillStyle = @innerColor(i/@width, d) if typeof(@innerColor) == "function"
       @ctx.clearRect t*i, middle - middle * d, t, (middle * d * 2)
-      #ctx.fillRect t*i, middle - middle * d, t, middle * d * 2
-
-      # x y width height
-      @ctx.fillRect parseInt(t*i, 10), parseInt(middle - middle * d, 10), parseInt(t, 10), parseInt(middle * d * 2, 10)
+      @ctx.fillRect t*i, middle - middle * d, t, middle * d * 2
       i++
 
   clear: ->
