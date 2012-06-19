@@ -3,7 +3,7 @@ window.Waveform = class Waveform
     @container = options.container
     @canvas    = options.canvas
     @data      = options.data || []
-    @outerColor = options.outerColor || "#FFFFFF"
+    @outerColor = options.outerColor || "transparent"
     @innerColor = options.innerColor || "#000000"
     @interpolate = true
     @interpolate = false if options.interpolate == false
