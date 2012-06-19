@@ -53,46 +53,58 @@
 
       %p Follow <a href="https://twitter.com/intent/user?screen_name=waveformjs">@waveformjs</a> for the latest.
 
-
       %a(name="examples")
         %h2 Examples
 
-      %p
-        This demonstrates a,b,c
+      %h3 A SoundCloud waveform
+      #example2.example-waveform
+      :example
+        $.getJSON("http://waveformjs.org/w?callback=?", {
+          url: "http://w1.sndcdn.com/EQyi2vpPOMvG_m.png",
+        }, function(d){
+
+          new Waveform({
+            container: document.getElementById("example2"),
+            innerColor: "#333",
+            data: d
+          });
+        });
+      %h3 A custom, rainbow colored waveform
       #example1.example-waveform
       :example
         new Waveform({
           container: document.getElementById("example1"),
-          outerColor: "transparent",
           innerColor: function(){
             return '#'+Math.floor(Math.random()*16777215).toString(16);
           },
           data: [1, 0.5, 1, 0],
         });
-      %p
-        This demonstrates a,b,c
-      #example2.example-waveform
-      :example
-        new Waveform({
-          container: document.getElementById("example2"),
-          outerColor: "transparent",
-          innerColor: function(){
-            return '#'+Math.floor(Math.random()*16777215).toString(16);
-          },
-          data: [1, 0.5, 1, 0],
-        });
-      %p
-        This demonstrates a,b,c
+      %h3 SoundCloud waveform with play and loading states.
       #example3.example-waveform
       :example
         new Waveform({
           container: document.getElementById("example3"),
-          outerColor: "transparent",
           innerColor: function(){
             return '#'+Math.floor(Math.random()*16777215).toString(16);
           },
           data: [1, 0.5, 1, 0],
         });
+      %h3 A growing waveform
+      #example4.example-waveform
+      :example
+        var data = [];
+        var waveform = new Waveform({
+          container: document.getElementById("example4"),
+          innerColor: "#f60",
+          interpolate: false
+        });
+
+        setInterval(function(){
+          data.push(Math.random());
+          waveform.update({
+            data: data
+          });
+        }, 50);
       %h2 Downloads <em>(Right-click, and use "Save As")</em>
       %p
         %a.button(href="/waveform.js") Latest Version (1.0.0)
