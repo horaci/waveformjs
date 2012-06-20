@@ -100,3 +100,71 @@ window.Waveform = class Waveform
       i++
     newData[fitCount - 1] = data[data.length - 1]
     newData
+
+
+  optionsForSyncedStream: (options={}) ->
+    innerColorWasSet = false
+    that = this
+    {
+      whileplaying: @redraw
+      whileloading: () ->
+        unless innerColorWasSet
+          stream = this
+          that.innerColor = (x, y) ->
+            if x < stream.position / stream.durationEstimate
+              options.playedColor || "rgba(255,  102, 0, 0.8)"
+            else if x < stream.bytesLoaded / stream.bytesTotal
+              options.loadedColor || "rgba(0, 0, 0, 0.8)"
+            else
+              options.defaultColor || "rgba(0, 0, 0, 0.4)"
+          innerColorWasSet = true
+        @redraw
+    }
+
+  dataFromSoundCloudTrack: (track) ->
+    JSONP.get "http://waveformjs.org/w", {url: track.waveform_url}, (data) =>
+      @update
+        data: data
+
+# Lightweight JSONP fetcher, Copyright 2010-2012 Erik Karlsson. All rights reserved, BSD licensed
+JSONP = (->
+  load = (url) ->
+    script = document.createElement("script")
+    done = false
+    script.src = url
+    script.async = true
+    script.onload = script.onreadystatechange = ->
+      if not done and (not @readyState or @readyState is "loaded" or @readyState is "complete")
+        done = true
+        script.onload = script.onreadystatechange = null
+        script.parentNode.removeChild script  if script and script.parentNode
+
+    head = document.getElementsByTagName("head")[0]  unless head
+    head.appendChild script
+  encode = (str) ->
+    encodeURIComponent str
+  jsonp = (url, params, callback, callbackName) ->
+    query = (if (url or "").indexOf("?") is -1 then "?" else "&")
+    params = params or {}
+    for key of params
+      query += encode(key) + "=" + encode(params[key]) + "&"  if params.hasOwnProperty(key)
+    jsonp = "json" + (++counter)
+    window[jsonp] = (data) ->
+      callback data
+      try
+        delete window[jsonp]
+      window[jsonp] = null
+
+    load url + query + (callbackName or config["callbackName"] or "callback") + "=" + jsonp
+    jsonp
+  setDefaults = (obj) ->
+    config = obj
+  counter = 0
+  head = undefined
+  query = undefined
+  key = undefined
+  window = this
+  config = {}
+  get: jsonp
+  init: setDefaults
+)()
