@@ -14,9 +14,9 @@ window.Waveform = class Waveform
         throw "Either canvas or container option must be passed"
 
     @patchCanvasForIE(@canvas)
-    @ctx = @canvas.getContext("2d")
-    @width  = parseInt @ctx.canvas.width, 10
-    @height = parseInt @ctx.canvas.height, 10
+    @context = @canvas.getContext("2d")
+    @width  = parseInt @context.canvas.width, 10
+    @height = parseInt @context.canvas.height, 10
 
     if options.data
       @update(options)
@@ -40,20 +40,20 @@ window.Waveform = class Waveform
 
   redraw: () =>
     @clear()
-    @ctx.fillStyle = @innerColor
+    @context.fillStyle = @innerColor
     middle = @height / 2
     i = 0
     for d in @data
       t = @width / @data.length
-      @ctx.fillStyle = @innerColor(i/@width, d) if typeof(@innerColor) == "function"
-      @ctx.clearRect t*i, middle - middle * d, t, (middle * d * 2)
-      @ctx.fillRect t*i, middle - middle * d, t, middle * d * 2
+      @context.fillStyle = @innerColor(i/@width, d) if typeof(@innerColor) == "function"
+      @context.clearRect t*i, middle - middle * d, t, (middle * d * 2)
+      @context.fillRect t*i, middle - middle * d, t, middle * d * 2
       i++
 
   clear: ->
-    @ctx.fillStyle = @outerColor
-    @ctx.clearRect(0, 0, @width, @height)
-    @ctx.fillRect(0, 0,  @width, @height)
+    @context.fillStyle = @outerColor
+    @context.clearRect(0, 0, @width, @height)
+    @context.fillRect(0, 0,  @width, @height)
 
   # rather private helpers:
 

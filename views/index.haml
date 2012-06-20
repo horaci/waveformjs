@@ -85,10 +85,10 @@
           container: document.getElementById("example4"),
           interpolate: false
         });
-        var context = waveform.canvas.getContext("2d");
-        waveform.innerColor = context.createLinearGradient(0,0,0,50);  
-        waveform.innerColor.addColorStop(0.0, '#f60');  
-        waveform.innerColor.addColorStop(1.0, "#333");  
+
+        waveform.innerColor = waveform.context.createLinearGradient(0, 0, 0, waveform.height);
+        waveform.innerColor.addColorStop(0.0, "#f60");
+        waveform.innerColor.addColorStop(1.0, "#333");
 
         var i=0;
         setInterval(function(){
