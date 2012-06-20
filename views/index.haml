@@ -42,7 +42,9 @@
       %a(name="top")
         %h1 Waveform.js <div id="logo"></div>
 
-      %p Waveform.js makes drawing <a href="http://soundcloud.com">SoundCloud</a> waveforms simple and lets you <strong>style</strong> and <strong>color</strong> them the way you want them. It comes as a small JavaScript <strong>library</strong> and is using a <em>lightweight service</em> hosted on <a href="http://waveformjs.org">waveformjs.org</a> that translates the waveform images provided by SoundCloud into <strong>floating points</strong>.
+      %p
+        Waveform.js makes drawing <a href="http://soundcloud.com">SoundCloud</a> waveforms simple and lets you <strong>style</strong> and <strong>color</strong> them the way you want.
+        It comes as a small JavaScript <strong>library</strong> and is using a <em>lightweight service</em> hosted on <a href="http://waveformjs.org">waveformjs.org</a> that translates the waveform images provided by SoundCloud into <strong>floating points</strong>.
 
       %pre
         <em>"Damn Good Waveforms"</em> (Eric Wahlforss, CTO of SoundCloud)
@@ -60,7 +62,7 @@
       #example2.example-waveform
       :example
         $.getJSON("http://waveformjs.org/w?callback=?", {
-          url: "http://w1.sndcdn.com/EQyi2vpPOMvG_m.png",
+          url: "http://w1.sndcdn.com/RfhgYrfSt9MR_m.png",
         }, function(d){
 
           new Waveform({
@@ -69,52 +71,69 @@
             data: d
           });
         });
-      %h3 A custom, rainbow colored waveform
-      #example1.example-waveform
-      :example
-        new Waveform({
-          container: document.getElementById("example1"),
-          innerColor: function(){
-            return '#'+Math.floor(Math.random()*16777215).toString(16);
-          },
-          data: [1, 0.5, 1, 0],
-        });
-      %h3 SoundCloud waveform with play and loading states.
-      #example3.example-waveform
-      :example
-        new Waveform({
-          container: document.getElementById("example3"),
-          innerColor: function(){
-            return '#'+Math.floor(Math.random()*16777215).toString(16);
-          },
-          data: [1, 0.5, 1, 0],
-        });
-      %h3 A growing waveform
+      %h3 A growing waveform with a gradient
       #example4.example-waveform
+      %p
+        When the interpolate option is false, each data sample will be drawn on one pixel.
+        Once the full width has been exceeded the older data will be cut off. This can be used to
+        draw waveforms when sounds are recorded with the SoundCloud Javascript SDK.
+        In addition this waveform is styled using a canvas gradient as innerColor.
       :example
         var data = [];
+
         var waveform = new Waveform({
           container: document.getElementById("example4"),
-          innerColor: "#f60",
           interpolate: false
         });
+        var context = waveform.canvas.getContext("2d");
+        waveform.innerColor = context.createLinearGradient(0,0,0,50);  
+        waveform.innerColor.addColorStop(0.0, '#f60');  
+        waveform.innerColor.addColorStop(1.0, "#333");  
 
+        var i=0;
         setInterval(function(){
-          data.push(Math.random());
+          data.push(Math.cos(i++/25) - 0.2 + Math.random()*0.3);
           waveform.update({
             data: data
           });
         }, 50);
+      %h3 A weird custom waveform with random colors
+      #example1.example-waveform
+      %p
+        In this example the data is set manually with just a few samples, which will be interpolated to the full width.
+        The innerColor is a function that gets called for each vertical line and will return a random color.
+      :example
+        new Waveform({
+          container: document.getElementById("example1"),
+          innerColor: function(x, y){
+            return '#'+Math.floor(Math.random()*16777215).toString(16);
+          },
+          data: [0, 0.3, 1, 0.5, 1, 0.3, 0],
+        });
       %h2 Downloads <em>(Right-click, and use "Save As")</em>
       %p
         %a.button(href="/waveform.js") Latest Version (1.0.0)
 
       %a(name="usage")
         %h2 Usage
-      %p Bacon ipsum dolor sit amet tri-tip jerky cow turducken chuck, pig short ribs short loin speck ground round beef ribs. Pork belly pork loin tongue ham hock pastrami. Ham hock speck chicken, jerky ribeye tongue filet mignon turducken pancetta. Flank ground round fatback salami. Cow andouille pork chop turducken. T-bone tail spare ribs filet mignon tongue.
-      %pre
-        var object = {};
 
-      %a(name="interpolation")
-        %h3 Interpolation
-      %p Bacon ipsum dolor sit amet tri-tip jerky cow turducken chuck, pig short ribs short loin speck ground round beef ribs. Pork belly pork loin tongue ham hock pastrami. Ham hock speck chicken, jerky ribeye tongue filet mignon turducken pancetta. Flank ground round fatback salami. Cow andouille pork chop turducken. T-bone tail spare ribs filet mignon tongue.
+      %p Start by adding the <code>waveform.js</code> script to your page or app:
+
+      %pre
+        %code
+          <script src="/waveform.js" ></script>
+
+      %p
+        Once added you can create new waveforms using the
+        <code>Waveform</code> constructor:
+
+      :preserve
+        var waveform = new Waveform({
+          container: document.getElementById("test"),
+          data: [1, 0.2, 0.5]
+        });
+
+
+      The constructor supports a variety of options:
+
+
