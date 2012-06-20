@@ -9,12 +9,12 @@ $(function() {
     }
   }
 
-  var i = 0;
+  var i = 0, showWaves = [0, 0, 0, 0];
   var headerWaveform = new Waveform({
     container: $("#logo")[0],
     outerColor: "transparent",
     innerColor: function(x){
-      if(i > x){
+      if(showWaves[Math.floor(x / 0.25)]){
         return "#ff6600";
       }else{
         return "#333";
@@ -27,26 +27,30 @@ $(function() {
   });
 
   setTimeout(function(){
-    i = 0.25;
+    showWaves = [1, 0, 0, 0];
     headerWaveform.redraw();
-  }, 300);
-
-
-  setTimeout(function(){
-    i = 0.50;
-    headerWaveform.redraw();
-  }, 400);
-
-  setTimeout(function(){
-    i = 0.75;
-    headerWaveform.redraw();
-  }, 500);
-
-
-  setTimeout(function(){
-    i = 1;
-    headerWaveform.redraw();
-  }, 600);
+    setTimeout(function(){
+      showWaves = [0, 1, 0, 0];
+      headerWaveform.redraw();
+    setTimeout(function(){
+      showWaves = [0, 0, 1, 0];
+      headerWaveform.redraw();
+    setTimeout(function(){
+      showWaves = [0, 0, 0, 1];
+      headerWaveform.redraw();
+    setTimeout(function(){
+      showWaves = [0, 0, 1, 0];
+      headerWaveform.redraw();
+    setTimeout(function(){
+      showWaves = [0, 1, 0, 0];
+      headerWaveform.redraw();
+    setTimeout(function(){
+      showWaves = [1, 0, 0, 0];
+      headerWaveform.redraw();
+    setTimeout(function(){
+      showWaves = [1, 1, 1, 1];
+      headerWaveform.redraw();
+  }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 300);
 
 });
 
