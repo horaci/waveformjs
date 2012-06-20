@@ -13,6 +13,11 @@
     
     %script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
     %script(src="//platform.twitter.com/widgets.js")
+    %script(src="//connect.soundcloud.com/sdk.js")
+    :javascript
+      SC.initialize({
+        client_id: "YOUR_CLIENT_ID"
+      });
     %script(src="/waveform.js")
     %script(src="/application.js")
 
@@ -24,7 +29,6 @@
 
       %ul
         %li <a href="http://github.com/soundcloud/waveform.js" target="_blank">Github Repository</a>
-        /%li Annotated Source
 
       %h4 <a href="#top">Introduction</a>
 
@@ -43,7 +47,7 @@
         %h1 Waveform.js <div id="logo"></div>
 
       %p
-        Waveform.js makes drawing <a href="http://soundcloud.com">SoundCloud</a> waveforms simple and lets you <strong>style</strong> and <strong>color</strong> them the way you want.
+        Waveform.js makes drawing <a href="http://soundcloud.com">SoundCloud</a> waveforms simple and lets you <strong>style</strong> and <strong>color</strong> them the way you want it.
         It comes as a small JavaScript <strong>library</strong> and is using a <em>lightweight service</em> hosted on <a href="http://waveformjs.org">waveformjs.org</a> that translates the waveform images provided by SoundCloud into <strong>floating points</strong>.
 
       %pre
@@ -58,20 +62,30 @@
       %a(name="examples")
         %h2 Examples
 
-      %h3 A SoundCloud waveform
+      %h3 Hooking up a waveform to a SoundCloud track
       #example2.example-waveform
-      :example
-        $.getJSON("http://waveformjs.org/w?callback=?", {
-          url: "http://w1.sndcdn.com/RfhgYrfSt9MR_m.png",
-        }, function(d){
+      %p
 
-          new Waveform({
+
+        The prepareSoundCloudStreamWithWaveform function will do all the work to setup a SoundCloud stream together with a nice waveform.
+        %a{href: "javascript:window.exampleStream.togglePause(); false;"} Click here to test playback.
+
+      :example
+        // assumes that the SoundCloud JS SDK is loaded and initialized.
+
+        SC.get("/tracks/293", function(track){
+          var waveform = new Waveform({
             container: document.getElementById("example2"),
-            innerColor: "#333",
-            data: d
+            innerColor: "#333"
+          });
+
+          waveform.dataFromSoundCloudTrack(track);
+          SC.stream(track.uri, waveform.optionsForSyncedStream(), function(stream){
+            window.exampleStream = stream;
           });
         });
-      %h3 A growing waveform with a gradient
+
+      %h3 Drawing a waveform with a gradient on the fly
       #example4.example-waveform
       %p
         When the interpolate option is false, each data sample will be drawn on one pixel.
@@ -97,7 +111,7 @@
             data: data
           });
         }, 50);
-      %h3 A weird custom waveform with random colors
+      %h3 Weird customized waveform with random colors
       #example1.example-waveform
       %p
         In this example the data is set manually with just a few samples, which will be interpolated to the full width.
