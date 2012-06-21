@@ -24,24 +24,6 @@
     %link(href="http://cloud.webtype.com/css/c09e383b-9747-406d-8ff5-95ae1c9217e9.css" rel="stylesheet" type="text/css")
     %link(href="/application.css" rel="stylesheet" type="text/css")
   %body
-    %nav
-      %h4 <a href="#top">Waveform.js <em>(1.0.0)</em></a>
-
-      %ul
-        %li <a href="http://github.com/soundcloud/waveform.js" target="_blank">Github Repository</a>
-
-      %h4 <a href="#top">Introduction</a>
-
-      %h4 <a href="#usage">Usage</a>
-
-      %h4 <a href="#examples">Examples</a>
-
-      %ul
-        %li <a href="#interpolation">Interpolation</a>
-        %li Cropped
-        %li Playback
-        %li Innercolor
-
     %section
       %a(name="top")
         %h1 Waveform.js <div id="logo"></div>
@@ -53,11 +35,7 @@
       %pre
         <em>"Damn Good Waveforms"</em> (Eric Wahlforss, CTO of SoundCloud)
 
-      %p The project is open source and <a href="http://github.com/soundcloud/waveform.js">hosted on Github</a>. This page provides all the documentation you'll need as well as a list of <a href="#examples">examples</a>. Waveform.js is available to use under the <a href="#">MIT software license</a>. It was written by <a href="https://twitter.com/intent/user?screen_name=johanneswagener">Johannes Wagener</a> and <a href="https://twitter.com/intent/user?screen_name=leemartin">Lee Martin</a>.
-
-      %p You can report <strong>bugs</strong> and discuss <strong>features</strong> on the <a href="http://github.com/soundcloud/waveform.js/issues">Github issues page</a>.
-
-      %p Follow <a href="https://twitter.com/intent/user?screen_name=waveformjs">@waveformjs</a> for the latest.
+      %p The project is open source and <a href="http://github.com/soundcloud/waveform.js">hosted on Github</a>. This page provides all the documentation you'll need as well as a list of <a href="#examples">examples</a>. Waveform.js is available to use under the <a href="#">MIT software license</a>. It was written by <a href="https://twitter.com/intent/user?screen_name=johanneswagener">Johannes Wagener</a> and <a href="https://twitter.com/intent/user?screen_name=leemartin">Lee Martin</a>. You can report <strong>bugs</strong> and discuss <strong>features</strong> on the <a href="http://github.com/soundcloud/waveform.js/issues">Github issues page</a>.
 
       %a(name="examples")
         %h2 Examples
@@ -80,7 +58,8 @@
           });
 
           waveform.dataFromSoundCloudTrack(track);
-          SC.stream(track.uri, waveform.optionsForSyncedStream(), function(stream){
+          var streamOptions = waveform.optionsForSyncedStream();
+          SC.stream(track.uri, streamOptions, function(stream){
             window.exampleStream = stream;
           });
         });
@@ -99,10 +78,12 @@
           container: document.getElementById("example4"),
           interpolate: false
         });
+        var ctx = waveform.context;
 
-        waveform.innerColor = waveform.context.createLinearGradient(0, 0, 0, waveform.height);
-        waveform.innerColor.addColorStop(0.0, "#f60");
-        waveform.innerColor.addColorStop(1.0, "#333");
+        var gradient = ctx.createLinearGradient(0, 0, 0, waveform.height);
+        gradient.addColorStop(0.0, "#f60");
+        gradient.addColorStop(1.0, "#333");
+        waveform.innerColor = gradient;
 
         var i=0;
         setInterval(function(){

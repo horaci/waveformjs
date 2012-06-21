@@ -48,9 +48,13 @@ $(function() {
       showWaves = [1, 0, 0, 0];
       headerWaveform.redraw();
     setTimeout(function(){
+      showWaves = [0, 0, 0, 0];
+      headerWaveform.redraw();
+
+    setTimeout(function(){
       showWaves = [1, 1, 1, 1];
       headerWaveform.redraw();
-  }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 300);
+  }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 150); }, 300);
 
 });
 
