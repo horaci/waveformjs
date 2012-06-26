@@ -58,13 +58,11 @@
       %h3 Hooking up a waveform to a SoundCloud track
       #example2.example-waveform
       %p
-
-
-        Using the <code>dataFromSoundCloudTrack</code> will call the endpoint on waveform.js.org to convert the waveform image into the floats to be displayed.
+        Using the <code>dataFromSoundCloudTrack</code> the data of the waveform will be pulled from the endpoint on waveform.js.org that converts the SoundCloud waveform image into the floats.
 
         Additionally <code>optionsForSyncedStream</code> will prepare options for SC.stream that will sync up the loading and playing progress of the stream with the waveform.
 
-        %a{href: "javascript:window.exampleStream.togglePause(); false;"} Click here to test playback.
+        %a{href: "javascript:window.exampleStream.togglePause(); false;"} Click here to test playback!
 
       :example
         // assumes that the SoundCloud JS SDK is loaded and initialized.
@@ -113,7 +111,7 @@
       %h3 Weird customized waveform with random colors
       #example1.example-waveform
       %p
-        In this example the data is set manually with just a few samples, which will be interpolated to the full width.
+        In this example the data is set manually to just a few samples, which will be interpolated to the full width.
         The <code>innerColor</code> is a function that gets called for each vertical line and will return a random color.
       :example
         new Waveform({
@@ -121,7 +119,7 @@
           innerColor: function(x, y){
             return '#'+Math.floor(Math.random()*16777215).toString(16);
           },
-          data: [0, 0.3, 1, 0.5, 1, 0.3, 0],
+          data: [0, 0.3, 1, 0.5, 1, 0.3, 0]
         });
 
       %a(name="usage")
@@ -129,17 +127,61 @@
 
       %p Start by adding the <code>waveform.js</code> script to your page or app:
 
-      %pre
-        <script src="/waveform.js" ></script>
+      %pre.code
+        = preserve do
+          :escaped
+            <script src="waveform.js"></script>
 
       %p
         Once added you can create new waveforms using the
         <code>Waveform</code> prototype:
 
-      :preserve
-        var waveform = new Waveform({
-          container: document.getElementById("test"),
-          data: [1, 0.2, 0.5]
-        });
+      %pre.code
+        = preserve do
+          :escaped
+            var waveform = new Waveform({
+              container: document.getElementById("test"),
+              data: [1, 0.2, 0.5]
+            });
+      %p
+        The following options can be passed, except for <code>container</code> all others are optional:
+      %ul
+        %li
+          <code>container</code>: html element that will contain the new canvas element.
+        %li
+          <code>width</code>: width in pixel, if not passed will be calculated from the container
+        %li
+          <code>height</code>: height in pixel, if not passed will be calculated from the container
+        %li
+          <code>innerColor</code>: color of the waveform. can be a hex triplet string, a canvas gradient or a function that returns one of these.
+        %li
+          <code>outerColor</code>: color of the outer area. can be a hex triplet string or a canvas gradient.
+        %li
+          <code>interpolate</code>: interpolated waveforms will be stretched to the full width, non interpolated will be drawn in one pixel lines per sample and cut off on the left end.
 
-      This constructor supports a variety of options:
+      %h4 Waveform#update()
+
+      %p
+        With the <code>update</code> method the data can be updated and the waveform redrawn, it also accepts the <code>interpolate</code> option.
+
+      %pre.code
+        = preserve do
+          :escaped
+            waveform.update({
+              data: [0.5, 1.0, 0.5, 1.0]
+            });
+
+      %h4 Waveform#dataFromSoundCloudTrack()
+      %p
+        The <code>dataFromSoundCloudTrack</code> method accepts a SoundCloud track object (containing the waveform_url) and will call the waveformjs.org endpoint to 
+        retrieve and set the data samples.
+
+      %h4 Waveform#optionsForSyncedStream()
+      %p
+        The <code>optionsForSyncedStream</code> method returns an options object that can be passed to soundManager or the SoundCloud JS SDK <code>SC.stream</code> method. These options will automatically sync and redraw the waveform according to its stream loading and playing progress.
+        The options will only include the whileplaying and whileloading option, all others can be overridden.
+
+      %h4 SoundCloud Waveform Endpoint
+
+      %p
+        The endpoint is located at <a href="http://waveformjs.org/w">http://waveformjs.org/w</a> and accepts a <code>url</code> parameter that is pointing to a SoundCloud waveform image URL (waveform_url in the track object). The response will be an array of floats between 0 and 1. JSONP is supported.
