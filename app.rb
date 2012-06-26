@@ -64,7 +64,11 @@ get '/w*' do
     waveform
   end
 
-  "#{ params[:callback] }(#{ waveform.to_json });"
+  if params[:callback]
+    "#{ params[:callback] }(#{ waveform.to_json });"
+  else
+    waveform.to_json
+  end
 end
 
 def memcache_fetch(key)
